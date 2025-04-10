@@ -4,15 +4,19 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useState } from 'react';
 
+interface WebhookResponse {
+  response: string;
+}
+
 export default function HomeScreen() {
-  const { imageUrl, isLoading, error, refetch } = useDogImage();
+  const { imageUrl, isLoading, error, refetch, currentBreed } = useDogImage();
   const [message, setMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([
     { id: 1, text: 'Hello! I love dogs!', isUser: false },
     { id: 2, text: 'Me too! What\'s your favorite breed?', isUser: true },
   ]);
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (message.trim() === '') return;
     
     // Add user message
@@ -21,18 +25,50 @@ export default function HomeScreen() {
       text: message, 
       isUser: true 
     }]);
+
+    // Send message and breed to webhook
+    try {
+      const response = await fetch('http://localhost:5678/webhook-test/b8ca0fd2-0dff-47ad-b624-a93b69af8f49', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message,
+          breed: currentBreed,
+        }),
+      });
+
+      // First try to get the response as text
+      const responseText = await response.text();
+      
+      let responseData: WebhookResponse;
+      try {
+        // Try to parse the text as JSON
+        responseData = JSON.parse(responseText);
+      } catch (jsonError) {
+        // If it's not JSON, use the raw text as the response
+        responseData = { response: responseText };
+      }
+      
+      // Add webhook response to chat
+      setChatMessages(prev => [...prev, { 
+        id: prev.length + 1, 
+        text: responseData.response || responseText, // Fallback to raw text if response property doesn't exist
+        isUser: false 
+      }]);
+    } catch (error) {
+      console.error('Failed to send data to webhook:', error);
+      // Add error message to chat
+      setChatMessages(prev => [...prev, { 
+        id: prev.length + 1, 
+        text: "Sorry, I couldn't process your message at the moment.", 
+        isUser: false 
+      }]);
+    }
     
     // Clear input
     setMessage('');
-    
-    // Simulate response (in a real app, you'd call an API here)
-    setTimeout(() => {
-      setChatMessages(prev => [...prev, { 
-        id: prev.length + 1, 
-        text: `Woof! That's interesting!`, 
-        isUser: false 
-      }]);
-    }, 1000);
   };
 
   return (
@@ -57,7 +93,15 @@ export default function HomeScreen() {
       <ThemedView style={styles.chatContainer}>
         <ThemedText style={styles.chatTitle}>Chat with Doggo</ThemedText>
         
-        <ScrollView style={styles.chatMessages}>
+        <ScrollView 
+          style={styles.chatMessages}
+          ref={ref => {
+            if (ref) {
+              // Scroll to bottom when new messages arrive
+              ref.scrollToEnd({ animated: true });
+            }
+          }}
+        >
           {chatMessages.map((chat) => (
             <ThemedView 
               key={chat.id} 
@@ -80,6 +124,7 @@ export default function HomeScreen() {
             onChangeText={setMessage}
             placeholder="Type a message..."
             placeholderTextColor="#999"
+            onSubmitEditing={sendMessage}
           />
           <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
             <ThemedText style={styles.sendButtonText}>Send</ThemedText>
