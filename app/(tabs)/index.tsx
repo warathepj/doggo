@@ -75,6 +75,7 @@ export default function HomeScreen() {
     <ThemedView style={styles.container}>
       {isLoading && <ThemedText>Loading...</ThemedText>}
       {error && <ThemedText>Error: {error}</ThemedText>}
+      <ThemedText style={styles.titleText}>Doggo</ThemedText>
       {imageUrl && (
         <Image
           source={{ uri: imageUrl }}
@@ -139,12 +140,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start', // Changed from 'center' to 'flex-start'
+    paddingTop: 50, // Added specific top padding instead of centering everything
     padding: 20,
   },
+  titleText: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    marginBottom: 20, // Increased from 10 to 20 to add more space
+    color: '#A1CEDC',
+  },
   dogImage: {
-    width: 300,
-    height: 300,
+    width: 180,
+    height: 180,
     borderRadius: 10,
   },
   button: {
