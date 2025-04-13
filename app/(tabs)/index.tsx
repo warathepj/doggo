@@ -28,7 +28,7 @@ export default function HomeScreen() {
 
     // Send message and breed to webhook
     try {
-      const response = await fetch('http://localhost:5678/webhook-test/bb6fe301-3cea-4226-860a-4bab5c63c2e0', {
+      const response = await fetch('your-webhook-url', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
