@@ -30,7 +30,7 @@ A React Native/Expo app that lets you chat with AI-powered dogs! Each random dog
 2. Configure n8n webhook:
 
    - Update the webhook URL in `app/(tabs)/index.tsx` with your n8n instance URL
-   - Ensure your n8n workflow is active and properly configured
+   - Ensure your n8n workflow is active and properly configured (n8n flow in folder images)
 
 ```bash
 npx expo start
