@@ -12,8 +12,8 @@ export default function HomeScreen() {
   const { imageUrl, isLoading, error, refetch, currentBreed } = useDogImage();
   const [message, setMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([
-    { id: 1, text: 'Hello! I love dogs!', isUser: false },
-    { id: 2, text: 'Me too! What\'s your favorite breed?', isUser: true },
+    { id: 1, text: 'สวัสดี! ฉันรักน้องหมา!', isUser: false },
+    { id: 2, text: 'ฉันด้วย!', isUser: true },
   ]);
 
   const sendMessage = async () => {
@@ -28,7 +28,7 @@ export default function HomeScreen() {
 
     // Send message and breed to webhook
     try {
-      const response = await fetch('http://localhost:5678/webhook-test/b8ca0fd2-0dff-47ad-b624-a93b69af8f49', {
+      const response = await fetch('http://localhost:5678/webhook-test/bb6fe301-3cea-4226-860a-4bab5c63c2e0', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ export default function HomeScreen() {
         onPress={refetch}
         style={styles.button}
       >
-        Fetch New Dog
+        สุ่มเลือกน้องหมา
       </ThemedText>
       
       {/* Chat UI Section */}
@@ -160,12 +160,13 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#A1CEDC',
     borderRadius: 5,
+    color: '#000', // Added black text color
   },
   // Chat UI styles
   chatContainer: {
     width: '100%',
     marginTop: 20,
-    height: 300,
+    height: 500, // Increased from 300
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 10,

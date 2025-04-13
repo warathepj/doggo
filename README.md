@@ -1,50 +1,74 @@
-# Welcome to your Expo app 👋
+# 🐕 Doggo - AI Dog Chat App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native/Expo app that lets you chat with AI-powered dogs! Each random dog image comes with its own breed-specific AI personality to chat with.
 
-## Get started
+## Features
 
-1. Install dependencies
+- 🎲 Random dog image generation using the Dog CEO API
+- 💬 Chat interface with breed-specific AI personalities
+- 🌐 Integration with n8n webhook for AI responses
+- 🇹🇭 Thai/English language support
+- 📱 Cross-platform (iOS, Android, Web) support
+
+## Prerequisites
+
+- Node.js (version specified in package.json)
+- npm or yarn
+- n8n server running with the dog AI agent workflow
+- Expo Go app (for mobile development)
+
+## Getting Started
+
+1. Install dependencies:
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Configure n8n webhook:
 
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+   - Update the webhook URL in `app/(tabs)/index.tsx` with your n8n instance URL
+   - Ensure your n8n workflow is active and properly configured
 
 ```bash
-npm run reset-project
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+4. Run on your preferred platform:
+   - Press `i` for iOS simulator
+   - Press `a` for Android emulator
+   - Press `w` for web browser
+   - Scan QR code with Expo Go app for physical devices
 
-## Learn more
+## Project Structure
 
-To learn more about developing your project with Expo, look at the following resources:
+- `app/(tabs)/index.tsx` - Main chat interface and dog image display
+- `hooks/useDogImage.ts` - Custom hook for fetching random dog images
+- `components/` - Reusable UI components
+- `assets/` - Images and fonts
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## How It Works
 
-## Join the community
+1. The app fetches random dog images from the Dog CEO API
+2. Each image's breed is extracted from the URL
+3. Messages are sent to n8n webhook along with the current breed
+4. n8n processes the message using AI to respond as that specific breed
+5. Responses are displayed in the chat interface
 
-Join our community of developers creating universal apps.
+## Development
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+To modify the chat interface or add features:
+
+1. Edit `app/(tabs)/index.tsx` for main screen changes
+2. Update `hooks/useDogImage.ts` for dog image fetching logic
+3. Modify the n8n workflow for different AI personalities
+
+## License
+
+MIT
+
+## Credits
+
+- Dog images provided by [Dog CEO API](https://dog.ceo/dog-api/)
+- Built with [Expo](https://expo.dev)
+- AI integration powered by n8n
